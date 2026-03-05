@@ -77,7 +77,7 @@ class EmptyRecipientError(SafeIdError):
     
 
 @dataclass(frozen=True)
-class EmptyWatermarkTextErrror(SafeIdError):
+class EmptyWatermarkTextError(SafeIdError):
     """Raised when watermark text is empty or whitespace"""
     
     
@@ -86,7 +86,7 @@ class EmptyWatermarkTextErrror(SafeIdError):
 @dataclass(frozen=True)
 class OutputAlreadyExistsError(SafeIdError):
     """Raised when output file already exists and overwriting is not allowed."""
-    output_path = Path
+    output_path: Path
     
     @classmethod
     def for_path(cls, output_path: Path) -> "OutputAlreadyExistsError":
@@ -100,7 +100,7 @@ class OutputAlreadyExistsError(SafeIdError):
 @dataclass(frozen=True)
 class ExportFailedError(SafeIdError):
     """Raised when writing the output file fails for an unexepected reason"""
-    output_path = Optional[Path] = None
+    output_path: Optional[Path] = None
     
     @classmethod
     def for_path(cls, output_path: Path, *, detail: str) -> "ExportFailedError":

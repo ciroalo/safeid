@@ -25,7 +25,7 @@ class RectPt:
 @dataclass(frozen=True)
 class PageSpec:
     """Physical page specification"""
-    size: Literal["A4"] = ["A4"]
+    size: Literal["A4"] = "A4"
     margin_mm: float = 19.0
     
     
