@@ -29,7 +29,7 @@ class PillowImageDecoderAdapter(ImageDecoderPort):
             with Image.open(path) as img:
                 image_format = img.format
                 if image_format not in self._SUPPORTED_FORMATS:
-                    raise UnsupportedFormatError
+                    raise UnsupportedFormatError.for_path(path)
                 
                 normalized = ImageOps.exif_transpose(img)
                 
