@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class SafeIdError(Exception):
     """Base class for all domain/application errors intended to be shown to the user."""
     user_message: str
@@ -18,12 +18,12 @@ class SafeIdError(Exception):
 
 # --- Validation / Input errors
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class InvalidInputError(SafeIdError):
     """Generic invalid input error"""
     
     
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class InvalidImageCountError(SafeIdError):
     """Raised when user selects an invalid number of images"""
     count: int = 0
@@ -36,7 +36,7 @@ class InvalidImageCountError(SafeIdError):
             count=count,
         )
         
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class UnsupportedFormatError(SafeIdError):
     """Raised when an input image format is not supported"""
     path: Optional[Path] = None
@@ -50,7 +50,7 @@ class UnsupportedFormatError(SafeIdError):
         )
         
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class ImageTooSmallError(SafeIdError):
     """Raised when an image does not meet minimum dimension requirements"""
     
@@ -70,8 +70,19 @@ class ImageTooSmallError(SafeIdError):
             height_px=height_px,
         )
         
+        
+@dataclass(frozen=True, kw_only=True)
+class LayoutDoesNotFitError(SafeIdError):
+    """Raised when images cannot fit on the page under the selected layout policy"""
+    
+    @classmethod
+    def for_policy(cls, *, detail: str) -> "LayoutDoesNotFitError":
+        return cls(
+            user_message="The selected image do not fit on the page with the current layout settings. Allow scaling to scale down the image.",
+            detail=detail
+        )
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class EmptyRecipientError(SafeIdError):
     """Raised when recipient is empty or whitespace."""
     
@@ -97,7 +108,7 @@ class OutputAlreadyExistsError(SafeIdError):
         )
         
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class ExportFailedError(SafeIdError):
     """Raised when writing the output file fails for an unexepected reason"""
     output_path: Optional[Path] = None

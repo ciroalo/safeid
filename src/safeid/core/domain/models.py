@@ -74,17 +74,17 @@ class WatermarkSpec:
     word_spacing: int = 8
     
     
-@dataclass(frozen=True)
-class WatermarkPlan:
-    """Computed watermark placement plan.
-    
-    For MVP, this will be minimal
-    """
-    # Where watermark must cover (usually the photo area, but full for MVP)
-    target_area: RectPt
-    
-    
 # --- Layout ---
+
+@dataclass(frozen=True)
+class LayoutPolicy:
+    """Rules controlling how images are arranged on the page"""
+    
+    allow_rotation: bool = True
+    allow_scaling: bool = True
+    min_gap_mm: float = 12.0
+    stack_direction: Literal["vertical"] = "vertical"
+
 
 @dataclass(frozen=True)
 class PlacedImage:
