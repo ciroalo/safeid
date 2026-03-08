@@ -6,7 +6,6 @@ from safeid.core.domain.errors import InvalidInputError
 from safeid.core.domain.models import (
     ImageAsset,
     LayoutPlan,
-    WatermarkPlan,
     WatermarkSpec,
 )
 
@@ -18,7 +17,13 @@ class PdfRendererPort(Protocol):
     The core passes fully-decoded image pixels plus an explicit layout plan
     """
     
-    def render_pdf_bytes(self, *, images: Sequence[ImageAsset], layout: LayoutPlan, watermark: WatermarkSpec, watermark_plan: WatermarkPlan) -> bytes:
+    def render_pdf_bytes(
+        self, 
+        *, 
+        images: Sequence[ImageAsset], 
+        layout: LayoutPlan, 
+        watermark: WatermarkSpec
+    ) -> bytes:
         """Render the final PDF as bytes
         
         Args:
