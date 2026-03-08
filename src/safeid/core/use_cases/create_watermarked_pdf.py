@@ -17,11 +17,12 @@ from safeid.core.domain.models import (
     ImageAsset,
     LayoutPlan,
     PageSpec,
-    RectPt
+    LayoutPolicy
 )
 from safeid.core.ports.filesystem import FileSystemPort
 from safeid.core.ports.image_decoder import ImageDecoderPort
 from safeid.core.ports.pdf_renderer import PdfRendererPort
+from safeid.core.planners.layout_planner import plan_a4_vertical_stack
 
 
 @dataclass(frozen=True)
@@ -54,7 +55,11 @@ class CreateWatermarkedPdfUseCase:
         layout = self._plan_layout(decoded)
         
         # 5) Render PDF bytes
-        pdf_bytes = self.pdf_renderer.render_pdf_bytes(images=decoded, layout=layout, watermark=request.watermark)
+        pdf_bytes = self.pdf_renderer.render_pdf_bytes(
+            images=decoded, 
+            layout=layout, 
+            watermark=request.watermark
+        )
         
         # 6) Export
         self.filesystem.write_new_bytes(output_path, pdf_bytes)
@@ -87,13 +92,11 @@ class CreateWatermarkedPdfUseCase:
     
     @staticmethod
     def _plan_layout(images: Sequence[ImageAsset]) -> LayoutPlan:
-        # TODO: replace with LayoutPlanner in core/planne/layout_planner.py
-        # For now, this is a placeholder that makes the sue case compile
-        # We will implement determistic A4 placement next
-        
-        # Placeholder "full-page photo area" so renderer can still tile watermark
-        # if you choose to implement rendering full layout
         page = PageSpec(size="A4", margin_mm=19.0)
+        policy = LayoutPolicy(
+            allow_rotation=True,
+            allow_scaling=True,
+            min_gap_mm=12.0
+        )
         
-        # Until placement is implemented, fail fast to avoid silently wrong PDFs
-        raise InvalidInputError(user_message="Layout planning not implemented yet", detail=f"Got {len(images)} image(s).")
+        return plan_a4_vertical_stack(page=page, images=images, policy=policy)
