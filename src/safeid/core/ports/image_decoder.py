@@ -22,7 +22,12 @@ class ImageDecoderPort(Protocol):
         - return normalized pixel data without EXIF metadata
     """
     
-    def decode(self, path: Path) -> ImageAsset:
+    def decode(
+        self, 
+        path: Path,
+        *,
+        min_side_px: int = 600
+    ) -> ImageAsset:
         """Decode and normalize an image file.
         
         Args:
