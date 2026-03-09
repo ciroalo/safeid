@@ -4,9 +4,7 @@ import argparse
 import sys
 from pathlib import Path
 
-from safeid.adapters.filesystem.local_filesystem import LocalFileSystemAdapter
-from safeid.adapters.image.pillow_decoder import PillowImageDecoderAdapter
-from safeid.adapters.pdf.reportlab_renderer import ReportLabPdfRendererAdapter
+from safeid.app.container import build_create_watermarked_pdf_use_case
 from safeid.core.domain.models import (
     CreateWatermarkedPdfRequest,
     ImageSource,
@@ -37,14 +35,6 @@ def build_parser() -> argparse.ArgumentParser:
     )
     
     return parser
-
-
-def build_use_case() -> CreateWatermarkedPdfUseCase:
-    return CreateWatermarkedPdfUseCase(
-        image_decoder=PillowImageDecoderAdapter(),
-        pdf_renderer=ReportLabPdfRendererAdapter(),
-        filesystem=LocalFileSystemAdapter()
-    )
     
     
 def main() -> int:
@@ -63,7 +53,7 @@ def main() -> int:
         watermark=WatermarkSpec(text=watermark_text)
     )
     
-    use_case = build_use_case()
+    use_case = build_create_watermarked_pdf_use_case()
     
     try:
         result = use_case.execute(request=request)
