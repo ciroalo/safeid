@@ -1,0 +1,15 @@
+# Ignore the virtual environment
+.venv
+venv/
+
+# Byte-compiled (for pytest created files)
+__pycache__/
+
+# Ignored the pyinstaller generated files
+/dist
+/build
+*.spec
+
+# pip generated metadata
+*.egg-info
+src/*.egg-info
