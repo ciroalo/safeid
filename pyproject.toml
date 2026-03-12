@@ -3,10 +3,24 @@ name = "safeid"
 version = "0.1.0"
 description = "Privacy-first ID image watermarker"
 requires-python = ">=3.12"
-dependencies = []
+
+dependencies = [
+    "PySide6",
+    "Pillow",
+    "reportlab",
+]
 
 [tool.ruff]
 line-length = 88
 
 [tool.black]
 line-length = 88
+
+# dev section
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "ruff",
+    "black",
+    "pyinstaller"
+]
