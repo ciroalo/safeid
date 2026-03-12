@@ -20,7 +20,7 @@ from safeid.core.domain.errors import SafeIdError
 from safeid.core.domain.models import (
     CreateWatermarkedPdfRequest,
     ImageSource,
-    WatermarkSpec
+    WatermarkSpec,
 )
 from safeid.core.use_cases.create_watermarked_pdf import CreateWatermarkedPdfUseCase
 from safeid.ui.qt.dialogs import show_error_dialog, show_success_dialog
@@ -29,29 +29,26 @@ from safeid.ui.qt.mappers import map_error_to_dialog
 
 class MainWindow(QMainWindow):
     def __init__(
-        self,
-        *,
-        create_watermarked_pdf_use_case: CreateWatermarkedPdfUseCase
+        self, *, create_watermarked_pdf_use_case: CreateWatermarkedPdfUseCase
     ) -> None:
         super().__init__()
-        
+
         self._create_watermarked_pdf_use_case = create_watermarked_pdf_use_case
         self._selected_images: list[Path] = []
-        
+
         self.setWindowTitle("SafeID")
         self.resize(500, 500)
-        
+
         self._build_ui()
         self._connect_signals()
         self._refresh_ui_state()
-        
+
     def _build_ui(self) -> None:
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
 
         # Main dark background
-        central_widget.setStyleSheet(
-            """
+        central_widget.setStyleSheet("""
             QWidget {
                 background-color: #222126;
                 color: #f2f2f2;
@@ -147,8 +144,7 @@ class MainWindow(QMainWindow):
                 max-height: 1px;
                 min-height: 1px;
             }
-            """
-        )
+            """)
 
         root_layout = QVBoxLayout()
         root_layout.setContentsMargins(32, 28, 32, 15)
@@ -175,9 +171,7 @@ class MainWindow(QMainWindow):
         self.title_label.setObjectName("titleLabel")
         self.title_label.setAlignment(Qt.AlignmentFlag.AlignHCenter)
 
-        self.subtitle_label = QLabel(
-            "Generate a watermarked PDF from 1 or 2 ID images"
-        )
+        self.subtitle_label = QLabel("Generate a watermarked PDF from 1 or 2 ID images")
         self.subtitle_label.setObjectName("subtitleLabel")
         self.subtitle_label.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         self.subtitle_label.setWordWrap(True)
@@ -276,32 +270,31 @@ class MainWindow(QMainWindow):
 
         content_layout.addWidget(self.output_note_label)
         # content_layout.addSpacing(12)
-        
+
     def _connect_signals(self) -> None:
         self.select_images_button.clicked.connect(self._on_select_images_clicked)
         self.generate_button.clicked.connect(self._on_generate_clicked)
         self.recipient_input.textChanged.connect(self._refresh_ui_state)
-        
+
     def _on_select_images_clicked(self) -> None:
         file_paths, _ = QFileDialog.getOpenFileNames(
-            self,
-            "Select 1 or 2 images",
-            "",
-            "Images (*.jpg *.jpeg *.png)"
+            self, "Select 1 or 2 images", "", "Images (*.jpg *.jpeg *.png)"
         )
-        
+
         if not file_paths:
             return
-        
+
         selected = [Path(path) for path in file_paths]
         if len(selected) > 2:
-            show_error_dialog(self, title="Error", message="Please select only 1 or 2 images")
-            return 
-        
+            show_error_dialog(
+                self, title="Error", message="Please select only 1 or 2 images"
+            )
+            return
+
         self._selected_images = selected
         self._update_selected_files_list()
         self._refresh_ui_state()
-        
+
     def _on_generate_clicked(self) -> None:
         try:
             request = self._build_request()
@@ -309,39 +302,40 @@ class MainWindow(QMainWindow):
         except SafeIdError as exc:
             dialog_model = map_error_to_dialog(exc)
             show_error_dialog(
-                self, 
-                title=dialog_model.title, 
-                message=dialog_model.message, 
-                detail=dialog_model.detail)
-            return 
-        
+                self,
+                title=dialog_model.title,
+                message=dialog_model.message,
+                detail=dialog_model.detail,
+            )
+            return
+
         show_success_dialog(
             self,
             title="Success",
             message="PDF created successfully",
-            detail=str(result.output_path)
+            detail=str(result.output_path),
         )
-        
+
     def _build_request(self) -> CreateWatermarkedPdfRequest:
         recipient = self.recipient_input.text().strip()
         watermark_text = self.watermark_input.text().strip()
-        
+
         if watermark_text == "":
             watermark_text = recipient
-            
+
         return CreateWatermarkedPdfRequest(
             images=[ImageSource(path=path) for path in self._selected_images],
             recipient=recipient,
-            watermark=WatermarkSpec(text=watermark_text)
+            watermark=WatermarkSpec(text=watermark_text),
         )
-        
+
     def _update_selected_files_list(self) -> None:
         self.selected_files_list.clear()
         for path in self._selected_images:
             self.selected_files_list.addItem(path.name)
-            
+
     def _refresh_ui_state(self) -> None:
         has_valid_image_count = len(self._selected_images) in (1, 2)
         has_recipient = self.recipient_input.text().strip() != ""
-        
+
         self.generate_button.setEnabled(has_valid_image_count and has_recipient)

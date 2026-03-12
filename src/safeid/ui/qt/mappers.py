@@ -11,7 +11,7 @@ from safeid.core.domain.errors import (
     OutputAlreadyExistsError,
     ExportFailedError,
     LayoutDoesNotFitError,
-    InvalidInputError
+    InvalidInputError,
 )
 
 
@@ -20,7 +20,7 @@ class ErrorDialogModel:
     title: str
     message: str
     detail: str
-    
+
 
 def map_error_to_dialog(error: SafeIdError) -> ErrorDialogModel:
     if isinstance(error, InvalidImageCountError):

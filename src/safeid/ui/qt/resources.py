@@ -9,5 +9,5 @@ def resource_path(*parts: str) -> Path:
         base = Path(sys._MEIPASS)
     else:
         base = Path(__file__).resolve().parents[2]
-        
+
     return base.joinpath(*parts)
