@@ -1,5 +1,10 @@
 # SafeID
 
+![CI](https://github.com/ciroalo/safeid/actions/workflows/ci.yml/badge.svg)
+![Python](https://img.shields.io/badge/python-3.12-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Release](https://img.shields.io/github/v/release/ciroalo/safeid)
+
 ![home_photos](doc/images/safe-id-start.jpeg)
 
 SafeID is a privacy-focused desktop application that generates watermarked PDFs from sensitive identity images such as passports or ID cards.
