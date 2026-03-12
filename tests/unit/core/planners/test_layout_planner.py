@@ -9,8 +9,6 @@ from safeid.core.domain.models import (
     PageSpec,
     ImageAsset,
     LayoutPolicy,
-    PlacedImage,
-    LayoutPlan,
 )
 from safeid.core.domain.errors import LayoutDoesNotFitError
 
@@ -143,9 +141,6 @@ def test_photo_area_encloses_images():
     img2 = make_image(900, 700)
     
     layout = plan_a4_vertical_stack(page=page, images=[img1, img2])
-    
-    top = layout.placed_images[0].rect
-    bottom = layout.placed_images[1].rect
     
     area = layout.photo_area
     

@@ -8,7 +8,7 @@ from reportlab.lib.utils import ImageReader
 from reportlab.pdfgen import canvas
 
 from safeid.core.domain.errors import InvalidInputError
-from safeid.core.domain.models import ImageAsset, LayoutPlan, RectPt, WatermarkSpec
+from safeid.core.domain.models import ImageAsset, LayoutPlan, WatermarkSpec
 from safeid.core.ports.pdf_renderer import PdfRendererPort
 
 A4_WIDTH_PT = 595.275590551

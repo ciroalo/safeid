@@ -11,7 +11,6 @@ from safeid.core.domain.models import (
     WatermarkSpec
 )
 from safeid.core.domain.errors import SafeIdError
-from safeid.core.use_cases.create_watermarked_pdf import CreateWatermarkedPdfUseCase
 
 
 def build_parser() -> argparse.ArgumentParser:

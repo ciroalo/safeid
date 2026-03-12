@@ -8,7 +8,6 @@ from safeid.core.domain.models import (
     ImageSource,
     WatermarkSpec,
     ImageAsset,
-    LayoutPlan,
     SizePx,
 )
 from safeid.core.domain.errors import InvalidImageCountError

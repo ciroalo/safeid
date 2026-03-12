@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from typing import Protocol, Sequence
 
-from safeid.core.domain.errors import InvalidInputError
 from safeid.core.domain.models import (
     ImageAsset,
     LayoutPlan,

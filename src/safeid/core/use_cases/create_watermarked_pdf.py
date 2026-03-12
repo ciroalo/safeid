@@ -7,7 +7,6 @@ from typing import Sequence
 from safeid.core.domain.errors import (
     EmptyRecipientError,
     InvalidImageCountError,
-    InvalidInputError,
     OutputAlreadyExistsError,
     EmptyWatermarkTextError,
 )

@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from dataclasses import replace
 from typing import Sequence
 
 from safeid.core.domain.errors import InvalidInputError, LayoutDoesNotFitError
