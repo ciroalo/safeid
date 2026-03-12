@@ -10,5 +10,5 @@ def build_create_watermarked_pdf_use_case() -> CreateWatermarkedPdfUseCase:
     return CreateWatermarkedPdfUseCase(
         image_decoder=PillowImageDecoderAdapter(),
         pdf_renderer=ReportLabPdfRendererAdapter(),
-        filesystem=LocalFileSystemAdapter()
+        filesystem=LocalFileSystemAdapter(),
     )
