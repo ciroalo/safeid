@@ -1,4 +1,4 @@
 from safeid.ui.qt.app import run
 
-if __name__=="__main__":
+if __name__ == "__main__":
     raise SystemExit(run())
